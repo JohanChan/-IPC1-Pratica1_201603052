@@ -10,10 +10,11 @@ public class JuegoSnake {
        public static String[][] auxiliar= new String[35][70];
        public static String[] nombre_jugador=new String[5];
        public static String[] fecha= new String[5];
+       public static int[] puntos = new int[5];
        public static String[] snake;
        public static int Posx=1;
        public static int Posy=1;
-       public static int contador=0;
+       public static int contador=0,contadorunico=0;
        public static int punteo=0;
        public static int movimientos;
        public static String nombre,fecha_nac;
@@ -43,7 +44,7 @@ public class JuegoSnake {
                 System.out.println("\033[34mIngrese una opcion: ");
                 seleccion = sc.nextInt();
             switch(seleccion){
-                case 1: 
+                case 1:
                     punteo=10;
                     movimientos=0;
                     System.out.println("Has iniciado el juego");
@@ -51,6 +52,7 @@ public class JuegoSnake {
                     crea_tablero();
                     imprime_Tablero();
                     teclasJuego();
+                      
                     break;
                 case 2: 
                     movimientos = movimientos;
@@ -63,7 +65,7 @@ public class JuegoSnake {
                 case 3: 
                     saltoLinea();
                     System.out.println("Historial");
-                    historial();
+                    imprimirHistorial();
                     
                     break;
                 case 4: 
@@ -139,7 +141,7 @@ public class JuegoSnake {
         Random wall = new Random();
         int posx = wall.nextInt(35);
         int posy = wall.nextInt(68);
-        tablero[posx][posy] = "#";
+        tablero[posx][posy] = "\033[31m#";
     
     }
     
@@ -217,23 +219,17 @@ public class JuegoSnake {
     
     }
     public static void datoJugador(){
+        
         Scanner datos = new Scanner(System.in);
+        
         System.out.println("Ingrese nombre: ");
         nombre = datos.next();
-        nombre_jugador[contador]=nombre;
         System.out.println("Ingrese fecha de nacimiento formato dd/mm/aa: ");
         fecha_nac = datos.next();
-        fecha[contador] = fecha_nac;
-        contador++;
-        
+
+        historial(nombre,fecha_nac);
     }
-    public static void historial(){
-       contador=1;
-       for(int i=0;i<5;i++){
-            System.out.println(contador++ + " Nombre: "+nombre_jugador[i]+"\t"+"Fecha Nacimiento: "+fecha[i]+"\t"+"Punteo: "+ punteo);
-       }
-      
-    }
+    
     
     public static void puntos(){
         
@@ -250,14 +246,33 @@ public class JuegoSnake {
             System.out.println("");
             System.out.println("HAS GANDO EL JUEGO, FELICIDADES!!");
             System.out.println("Tu puntaje fue: "+punteo);
+            punteoTotal(punteo);
             
         }
         if(punteo<=0){
             System.out.println("");
             System.out.println("HAS PERDIDO EL JUEGO, INTENTALO DE NUEVO");
             System.out.println("Tu puntaje fue: "+punteo);
+            punteoTotal(punteo);
             
         }
+       
+    }
+    public static void punteoTotal(int punto){
+        puntos[contador] =punto;
+        contador++;
+    }
+
+    public static void historial(String nombre,String fechita){
+        nombre_jugador[contadorunico]=nombre;
+        fecha[contadorunico] = fechita;
+        contadorunico++;
+     }
+    public static void imprimirHistorial(){
+        contador=1;
+        for(int i=0;i<5;i++){
+            System.out.println(contador++ + " Nombre: "+nombre_jugador[i]+"\t"+"Fecha Nacimiento: "+fecha[i]+"\t"+"Punteo: "+ puntos[i]);
+       }
         
     }
     
@@ -284,7 +299,7 @@ public class JuegoSnake {
                     System.out.println("Tecla: "+ " " + entrada + "No es Valida");
                     if("W".equalsIgnoreCase(entrada)){
                         Posy -=1;
-                        if(tablero[Posy][Posx]=="#"){
+                        if(tablero[Posy][Posx]=="\033[31m#"){
                             Posy +=1;
                         
                         }
@@ -298,7 +313,7 @@ public class JuegoSnake {
                 }
                 if("S".equalsIgnoreCase(entrada)){
                     Posy +=1; 
-                        if(tablero[Posy][Posx]=="#"){
+                        if(tablero[Posy][Posx]=="\033[31m#"){
                             Posy-=1;
                         
                         }
@@ -310,7 +325,7 @@ public class JuegoSnake {
                 }
                 if("A".equalsIgnoreCase(entrada)){
                     Posx -=1;
-                    if(tablero[Posy][Posx]=="#"){
+                    if(tablero[Posy][Posx]=="\033[31m#"){
                         Posx +=1;
                     
                     }
@@ -321,7 +336,7 @@ public class JuegoSnake {
                     imprime_Tablero();
                 }
                 if("D".equalsIgnoreCase(entrada)){
-                    if(tablero[Posy][Posx]=="#"){
+                    if(tablero[Posy][Posx]=="\033[31m#"){
                     }else{
                         Posx+=1;
                     
