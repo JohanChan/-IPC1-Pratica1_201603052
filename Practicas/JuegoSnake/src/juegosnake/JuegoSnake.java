@@ -14,19 +14,16 @@ public class JuegoSnake {
        public static String[] snake;
        public static int Posx=1;
        public static int Posy=1;
-       public static int contador=0,contadorunico=0;
+       public static int contador=1,contadorunico=0,show=1;
        public static int punteo=0;
        public static int movimientos;
-       public static String nombre,fecha_nac;
-       public static void main(String[] args) {
+    public static String nombre,fecha_nac;
+    public static void main(String[] args) {
        menu();
        
 
     }
-    
-    /*
-                CREACION DE MENU 
-    */
+    //  CREACION DE MENU 
     public static void menu(){
         int seleccion=0;
         while(seleccion!=4){
@@ -54,13 +51,19 @@ public class JuegoSnake {
                     teclasJuego();
                       
                     break;
-                case 2: 
+                case 2:
+                    if(tablero==null){
+                        System.out.println("Primero debe iniciar partida");
+                    }else{
                     movimientos = movimientos;
                     saltoLinea();
                     System.out.println("Sigamos jugando");
                     regreso();
                     imprime_Tablero();
                     teclasJuego();
+                    
+                    }
+                    
                     break;
                 case 3: 
                     saltoLinea();
@@ -88,7 +91,7 @@ public class JuegoSnake {
         }
 
     }
-/*------------------------------------------------------------------------  
+    /*------------------------------------------------------------------------  
                        METODO CREA EL TABLERO DE 37x70                                                                    
     */
       
@@ -131,7 +134,6 @@ public class JuegoSnake {
 
     
  }
-    
     public static void wall(){
     /*
                     PAREDES ALEATORIAS
@@ -146,11 +148,9 @@ public class JuegoSnake {
     }
     
     }
-    
-    
     public static void imprime_Tablero(){
-        
-        tablero[Posy][Posx]="@";
+//        tablero[Posy][Posx]=" ";
+          tablero[Posy][Posx]="@";
         for(int fila=0;fila<35;fila++){
         System.out.println();
         for(int columna=0;columna<70;columna++){
@@ -174,14 +174,39 @@ public class JuegoSnake {
             if(fila == 9 && columna ==69){
                 System.out.print("      ##################");
             }
-        
+            if(fila == 12 && columna==69){
+                System.out.print("\033[34m      •••••••••••••••••••••••••••••••");
+            }
+            if(fila==13 && columna ==69){
+                System.out.print("\033[34m      •••••••• Instrucciones ••••••••");
+            }
+            if(fila ==14 && columna ==69){
+                System.out.print("\033[34m      ••••••••    W  arriba  ••••••••");
+            }
+            if(fila ==15 && columna ==69){
+                System.out.print("\033[34m      ••••••••    S  abajo   ••••••••");
+            }
+            if(fila ==16 && columna ==69){
+                System.out.print("\033[34m      ••••••••    D derecha  ••••••••");
+            }
+            if(fila ==17 && columna ==69){
+                System.out.print("\033[34m      •••••••    A izquierda  •••••••");
+            }
+            if(fila ==18 && columna ==69){
+                System.out.print("\033[34m      •••••••    M   pausar   •••••••");
+            }
+            if(fila ==19 && columna ==69){
+                System.out.print("\033[34m      •••••••••••••••••••••••••••••••");
+            }
+            
         }
+            
         System.out.print("");
     }
+        
         guardar(tablero);
     
     }
-    
     //Comida $, 
     public static void comida(){
         for(int porciento=0;porciento<40;porciento++){
@@ -210,7 +235,6 @@ public class JuegoSnake {
         
     
     }
-    
     public static void saltoLinea(){
     for(int i=0;i<80;i++){
         System.out.println("");
@@ -229,66 +253,56 @@ public class JuegoSnake {
 
         historial(nombre,fecha_nac);
     }
-    
-    
     public static void puntos(){
-        
         if(tablero[Posy][Posx] == "%"){
             punteo+=10;
-            
-        
         }
-        else if (tablero[Posy][Posx] == "$"){
+        if (tablero[Posy][Posx] == "$"){
             punteo-=10;
-            
         }
         if(punteo>=100){
             System.out.println("");
             System.out.println("HAS GANDO EL JUEGO, FELICIDADES!!");
             System.out.println("Tu puntaje fue: "+punteo);
             punteoTotal(punteo);
-            
         }
         if(punteo<=0){
             System.out.println("");
             System.out.println("HAS PERDIDO EL JUEGO, INTENTALO DE NUEVO");
             System.out.println("Tu puntaje fue: "+punteo);
             punteoTotal(punteo);
-            
         }
        
     }
-    public static void punteoTotal(int punto){
-        puntos[contador] =punto;
+    public static void punteoTotal(int puntito){
+        puntos[contador-1] = puntito;
         contador++;
     }
-
     public static void historial(String nombre,String fechita){
         nombre_jugador[contadorunico]=nombre;
         fecha[contadorunico] = fechita;
         contadorunico++;
      }
     public static void imprimirHistorial(){
-        contador=1;
+        
         for(int i=0;i<5;i++){
-            System.out.println(contador++ + " Nombre: "+nombre_jugador[i]+"\t"+"Fecha Nacimiento: "+fecha[i]+"\t"+"Punteo: "+ puntos[i]);
+            System.out.println(show++ + " Nombre: "+nombre_jugador[i]+"\t"+"Fecha Nacimiento: "+fecha[i]+"\t"+"Punteo: "+ puntos[i]);
        }
         
     }
-    
     public static void teclasJuego(){
             movimientos=0;
             tablero[Posy][Posx]="@";
-            System.out.println(" ");
-            System.out.println("\033[34m•••••••••••••••••••••••••••••••");
-            System.out.println("\033[34m•••••••• Instrucciones ••••••••");
-            System.out.println("\033[34m••••••••    W  arriba  ••••••••");
-            System.out.println("\033[34m••••••••    S  abajo   ••••••••");
-            System.out.println("\033[34m••••••••    D derecha  ••••••••");
-            System.out.println("\033[34m•••••••    A izquierda  •••••••");
-            System.out.println("\033[34m•••••••    M   pausar   •••••••");
-            System.out.println("\033[34m•••••••••••••••••••••••••••••••");
-            
+//            System.out.println(" ");
+//            System.out.println("\033[34m•••••••••••••••••••••••••••••••");
+//            System.out.println("\033[34m•••••••• Instrucciones ••••••••");
+//            System.out.println("\033[34m••••••••    W  arriba  ••••••••");
+//            System.out.println("\033[34m••••••••    S  abajo   ••••••••");
+//            System.out.println("\033[34m••••••••    D derecha  ••••••••");
+//            System.out.println("\033[34m•••••••    A izquierda  •••••••");
+//            System.out.println("\033[34m•••••••    M   pausar   •••••••");
+//            System.out.println("\033[34m•••••••••••••••••••••••••••••••");
+//            
             Scanner tecla = new Scanner(System.in);
             boolean exit = false;
             while(!exit){
@@ -372,12 +386,11 @@ public class JuegoSnake {
     tecla.close();
     }
     public static void guardar(String tabla[][]){
-        
         auxiliar = tabla;
-        
-    
+       
     }
     public static String[][] regreso(){
+        
         return auxiliar;
     
     }
