@@ -11,13 +11,14 @@ public class JuegoSnake {
        public static String[] nombre_jugador=new String[5];
        public static String[] fecha= new String[5];
        public static int[] puntos = new int[5];
-       public static String[] snake;
+       public static String[] snake= new String[10];
        public static int Posx=1;
        public static int Posy=1;
-       public static int contador=1,contadorunico=0,show=1;
+       public static int contador=0,contadorunico=0,show=1;
        public static int punteo=0;
        public static int movimientos;
-    public static String nombre,fecha_nac;
+       public static String nombre,fecha_nac;
+       public static int cont_crecer=0;
     public static void main(String[] args) {
        menu();
        
@@ -94,7 +95,6 @@ public class JuegoSnake {
     /*------------------------------------------------------------------------  
                        METODO CREA EL TABLERO DE 37x70                                                                    
     */
-      
     public static void crea_tablero(){
         //SE VACIA LA MATRIZ
         tablero = new String[35][70];
@@ -150,7 +150,8 @@ public class JuegoSnake {
     }
     public static void imprime_Tablero(){
 //        tablero[Posy][Posx]=" ";
-          tablero[Posy][Posx]="@";
+        snake[cont_crecer]="@";
+        tablero[Posy][Posx]=snake[cont_crecer];
         for(int fila=0;fila<35;fila++){
         System.out.println();
         for(int columna=0;columna<70;columna++){
@@ -256,27 +257,38 @@ public class JuegoSnake {
     public static void puntos(){
         if(tablero[Posy][Posx] == "%"){
             punteo+=10;
+            
+            
         }
         if (tablero[Posy][Posx] == "$"){
             punteo-=10;
+            
         }
         if(punteo>=100){
             System.out.println("");
             System.out.println("HAS GANDO EL JUEGO, FELICIDADES!!");
             System.out.println("Tu puntaje fue: "+punteo);
+//            puntos[contador]=punteo;
+//            contador++;
             punteoTotal(punteo);
         }
-        if(punteo<=0){
+        else if(punteo<=0){
             System.out.println("");
             System.out.println("HAS PERDIDO EL JUEGO, INTENTALO DE NUEVO");
             System.out.println("Tu puntaje fue: "+punteo);
+//            puntos[contador]=punteo;
+//            
             punteoTotal(punteo);
         }
-       
+//       contador++;
     }
     public static void punteoTotal(int puntito){
-        puntos[contador-1] = puntito;
+        puntos[contador] = puntito;
         contador++;
+    }
+    public static int total(){
+        return puntos[contador];
+        
     }
     public static void historial(String nombre,String fechita){
         nombre_jugador[contadorunico]=nombre;
@@ -292,17 +304,8 @@ public class JuegoSnake {
     }
     public static void teclasJuego(){
             movimientos=0;
-            tablero[Posy][Posx]="@";
-//            System.out.println(" ");
-//            System.out.println("\033[34m•••••••••••••••••••••••••••••••");
-//            System.out.println("\033[34m•••••••• Instrucciones ••••••••");
-//            System.out.println("\033[34m••••••••    W  arriba  ••••••••");
-//            System.out.println("\033[34m••••••••    S  abajo   ••••••••");
-//            System.out.println("\033[34m••••••••    D derecha  ••••••••");
-//            System.out.println("\033[34m•••••••    A izquierda  •••••••");
-//            System.out.println("\033[34m•••••••    M   pausar   •••••••");
-//            System.out.println("\033[34m•••••••••••••••••••••••••••••••");
-//            
+            snake[cont_crecer]="@";
+            tablero[Posy][Posx]=snake[cont_crecer];
             Scanner tecla = new Scanner(System.in);
             boolean exit = false;
             while(!exit){
@@ -317,6 +320,14 @@ public class JuegoSnake {
                             Posy +=1;
                         
                         }
+//                        if(tablero[Posy][Posx]=="%"){
+//                            snake[cont_crecer+1]="@";
+//                            tablero[Posy-1][Posx]=snake[cont_crecer+1];
+//                            teclasJuego();
+//                            puntos();
+//                            break;
+                            
+//                        }
                         movimientos++;
                         puntos();
                         tablero[Posy+1][Posx] =" ";
@@ -331,6 +342,14 @@ public class JuegoSnake {
                             Posy-=1;
                         
                         }
+//                        if(tablero[Posy][Posx]=="%"){
+//                            snake[cont_crecer+1]="@";
+//                            tablero[Posy+1][Posx]=snake[cont_crecer+1];
+//                            teclasJuego();
+//                            puntos();
+//                            break;
+//                            
+//                        }
                         movimientos++;
                         puntos();
                         tablero[Posy-1][Posx] = " ";
@@ -343,6 +362,14 @@ public class JuegoSnake {
                         Posx +=1;
                     
                     }
+//                    if(tablero[Posy][Posx]=="%"){
+//                            snake[cont_crecer+1]="@";
+//                            tablero[Posy][Posx-1]=snake[cont_crecer+1];
+//                            teclasJuego();
+//                            puntos();
+//                            break;
+//                            
+//                        }
                     movimientos++;
                     puntos();
                     tablero[Posy][Posx+1]=" ";
@@ -355,6 +382,14 @@ public class JuegoSnake {
                         Posx+=1;
                     
                     }
+//                    if(tablero[Posy][Posx]=="%"){
+//                            snake[cont_crecer+1]="@";
+//                            tablero[Posy][Posx+1]=snake[cont_crecer+1];
+//                            teclasJuego();
+//                            puntos();
+//                            break;
+//                            
+//                        }
                     movimientos++;
                     puntos();
                     tablero[Posy][Posx-1]=" ";
@@ -394,9 +429,4 @@ public class JuegoSnake {
         return auxiliar;
     
     }
-
-        
-    
-
-    
 }
